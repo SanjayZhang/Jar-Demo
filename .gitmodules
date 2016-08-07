@@ -1,0 +1,6 @@
+[submodule "deps/common"]
+	path = deps/common
+	url = git@github.com:SanjayZhang/Tools-Java.git
+[submodule "quality"]
+	path = quality
+	url = git@github.com:SanjayZhang/QualityConfig.git

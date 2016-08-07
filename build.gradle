@@ -1,0 +1,48 @@
+def userGradleScript = file("quality/quality.gradle")
+if (userGradleScript.exists()) {
+    apply from: userGradleScript
+}
+
+group 'com.sanjay'
+version '1.0-SNAPSHOT'
+
+apply plugin: 'java'
+
+sourceCompatibility = 1.6
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile project(':deps:common')
+
+    compile 'kxml2:kxml2:2.3.0'
+    compile 'xmlpull:xmlpull:1.1.3.4a'
+
+    testCompile group: 'junit', name: 'junit', version: '4.11'
+}
+
+
+apply plugin: 'application'
+
+mainClassName = 'com.sanjay.Main'
+
+jar {
+    baseName = 'main'
+
+    from {
+        configurations.compile.collect { it.isDirectory() ? it : zipTree(it) }
+    }
+    from("src/main/java")
+    manifest {
+        attributes 'Main-Class': mainClassName,
+                'Implementation-Title': 'Gradle',
+                'Implementation-Version': version
+    }
+}
+
+task makeSrcJar(type: Jar, dependsOn: compileJava) {
+    baseName = 'main-src'
+    from("src/main/java")
+}
